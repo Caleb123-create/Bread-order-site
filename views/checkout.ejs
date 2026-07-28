@@ -1,0 +1,40 @@
+<%- include('partials/header') %>
+
+<h2 class="mb-4">Checkout</h2>
+
+<div class="row">
+  <div class="col-md-7">
+    <% if (error) { %>
+      <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+    <form action="/checkout" method="POST">
+      <div class="mb-3">
+        <label class="form-label">Delivery Address</label>
+        <textarea name="address" class="form-control" rows="3" required></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Phone Number</label>
+        <input type="tel" name="phone" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-dark w-100">Place Order</button>
+    </form>
+  </div>
+
+  <div class="col-md-5">
+    <h5>Order Summary</h5>
+    <ul class="list-group mb-3">
+      <% cart.forEach(item => { %>
+        <li class="list-group-item d-flex justify-content-between">
+          <span><%= item.name %> (<%= item.size %>) x<%= item.quantity %></span>
+          <span>₦<%= (item.price * item.quantity).toLocaleString() %></span>
+        </li>
+      <% }) %>
+      <li class="list-group-item d-flex justify-content-between fw-bold">
+        <span>Total</span>
+        <span>₦<%= total.toLocaleString() %></span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

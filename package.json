@@ -1,0 +1,28 @@
+{
+  "name": "bread-order-site",
+  "version": "1.0.0",
+  "description": "A website for ordering bread online",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-mongo": "^5.1.0",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "mongoose": "^8.4.0",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
