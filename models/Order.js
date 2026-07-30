@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const orderItemSchema = new mongoose.Schema({
   bread: { type: mongoose.Schema.Types.ObjectId, ref: 'Bread', required: true },
   name: { type: String, required: true },
-  size: { type: String, enum: ['small', 'medium', 'big'], required: true },
+  size: { type: String, enum: ['small', 'medium', 'large', 'very large'], required: true },
   price: { type: Number, required: true },
   quantity: { type: Number, required: true, min: 1 }
 }, { _id: false });
