@@ -86,7 +86,7 @@ footer {
   color: #1a1a1a;
 }
 .auth-body {
-  background-image: url('/images/Bakery-background.jfif');
+  background-image: url('/images/Bakery%20background.jfif');
   background-size: cover;
   background-position: center;
   min-height: 100vh;
@@ -95,7 +95,7 @@ footer {
 
 .auth-overlay {
   min-height: 100vh;
-  background-color: rgba(0, 0, 0, 0.55);
+  background-color: rgba(0, 0, 0, 0.164);
 }
 
 .auth-card {
