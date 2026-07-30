@@ -29,12 +29,12 @@
           <span>₦<%= (item.price * item.quantity).toLocaleString() %></span>
         </li>
       <% }) %>
-      <li class="list-group-item d-flex justify-content-between fw-bold">
-        <span>Total</span>
-        <span>₦<%= total.toLocaleString() %></span>
+      <li class="list-group-item d-flex justify-content-between">
+        <span>Subtotal</span>
+        <span>₦<%= subtotal.toLocaleString() %></span>
       </li>
-    </ul>
-  </div>
-</div>
-
-<%- include('partials/footer') %>
+      <li class="list-group-item d-flex justify-content-between">
+        <span>Service Fee</span>
+        <span>₦<%= serviceFee.toLocaleString() %></span>
+      </li>
+      <li class="list-group-item d-flex justify-content-between fw-bold">

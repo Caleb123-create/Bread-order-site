@@ -42,7 +42,21 @@ router.get('/logout', (req, res) => {
 // GET all orders (protected)
 router.get('/orders', ensureAdmin, async (req, res) => {
   const orders = await Order.find().populate('user', 'name email').sort({ createdAt: -1 });
-  res.render('admin/orders', { orders });
+
+  // Group orders by date (e.g. "July 30, 2026")
+  const grouped = {};
+  orders.forEach((order) => {
+    const dateKey = order.createdAt.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    if (!grouped[dateKey]) grouped[dateKey] = [];
+    grouped[dateKey].push(order);
+  });
+
+  res.render('admin/orders', { grouped });
 });
 
 // POST update order status (protected)

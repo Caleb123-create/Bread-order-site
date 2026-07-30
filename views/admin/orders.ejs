@@ -16,48 +16,53 @@
   <div class="container my-4">
     <h2 class="mb-4" style="color:#f5f5f5;">All Orders</h2>
 
-    <% if (orders.length === 0) { %>
-      <p style="color:#aaa;">No orders yet.</p>
-    <% } else { %>
-      <% orders.forEach(order => { %>
-        <div class="card mb-3" style="background-color:#2a2a2a; border:1px solid #d4af37;">
-          <div class="card-body">
-            <div class="d-flex justify-content-between flex-wrap">
-              <div>
-                <h6 style="color:#f5f5f5;">Order #<%= order._id.toString().slice(-6) %></h6>
-                <p style="color:#aaa; margin-bottom:4px;">
-                  Customer: <%= order.user ? order.user.name : 'Unknown' %>
-                  (<%= order.user ? order.user.email : '—' %>)
-                </p>
-                <p style="color:#aaa; margin-bottom:4px;">Phone: <%= order.phone %></p>
-                <p style="color:#aaa; margin-bottom:4px;">Address: <%= order.address %></p>
-                <p style="color:#aaa; margin-bottom:8px;">Placed: <%= order.createdAt.toLocaleString() %></p>
+    <% const dateKeys = Object.keys(grouped); %>
 
-                <ul style="color:#f5f5f5;">
-                  <% order.items.forEach(item => { %>
-                    <li><%= item.name %> (<%= item.size %>) x<%= item.quantity %> — ₦<%= (item.price * item.quantity).toLocaleString() %></li>
-                  <% }) %>
-                </ul>
-                <strong style="color:#d4af37;">Total: ₦<%= order.totalAmount.toLocaleString() %></strong>
-              </div>
+<% if (dateKeys.length === 0) { %>
+  <p style="color:#aaa;">No orders yet.</p>
+<% } else { %>
+  <% dateKeys.forEach(dateKey => { %>
+    <h4 class="mt-4 mb-3" style="color:#d4af37; border-bottom: 1px solid #d4af37; padding-bottom: 8px;">
+      <%= dateKey %> (<%= grouped[dateKey].length %> order<%= grouped[dateKey].length !== 1 ? 's' : '' %>)
+    </h4>
 
-              <div class="text-end">
-                <span class="badge bg-secondary text-uppercase mb-2"><%= order.status %></span>
-                <form action="/admin/orders/<%= order._id %>/status" method="POST" class="d-flex gap-2">
-                  <select name="status" class="form-select form-select-sm">
-                    <option value="pending" <%= order.status === 'pending' ? 'selected' : '' %>>Pending</option>
-                    <option value="confirmed" <%= order.status === 'confirmed' ? 'selected' : '' %>>Confirmed</option>
-                    <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Delivered</option>
-                    <option value="cancelled" <%= order.status === 'cancelled' ? 'selected' : '' %>>Cancelled</option>
-                  </select>
-                  <button type="submit" class="btn btn-gold btn-sm">Update</button>
-                </form>
-              </div>
+    <% grouped[dateKey].forEach(order => { %>
+      <div class="card mb-3" style="background-color:#2a2a2a; border:1px solid #d4af37;">
+        <div class="card-body">
+          <div class="d-flex justify-content-between flex-wrap">
+            <div>
+              <h6 style="color:#f5f5f5;">Order #<%= order._id.toString().slice(-6) %></h6>
+              <p style="color:#aaa; margin-bottom:4px;">
+                Customer: <%= order.user ? order.user.name : 'Unknown' %>
+                (<%= order.user ? order.user.email : '—' %>)
+              </p>
+              <p style="color:#aaa; margin-bottom:4px;">Phone: <%= order.phone %></p>
+              <p style="color:#aaa; margin-bottom:4px;">Address: <%= order.address %></p>
+              <p style="color:#aaa; margin-bottom:8px;">Placed: <%= order.createdAt.toLocaleTimeString() %></p>
+
+              <ul style="color:#f5f5f5;">
+                <% order.items.forEach(item => { %>
+                  <li><%= item.name %> (<%= item.size %>) x<%= item.quantity %> — ₦<%= (item.price * item.quantity).toLocaleString() %></li>
+                <% }) %>
+              </ul>
+              <strong style="color:#d4af37;">Total: ₦<%= order.totalAmount.toLocaleString() %></strong>
+            </div>
+
+            <div class="text-end">
+              <span class="badge bg-secondary text-uppercase mb-2"><%= order.status %></span>
+              <form action="/admin/orders/<%= order._id %>/status" method="POST" class="d-flex gap-2">
+                <select name="status" class="form-select form-select-sm">
+                  <option value="pending" <%= order.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                  <option value="confirmed" <%= order.status === 'confirmed' ? 'selected' : '' %>>Confirmed</option>
+                  <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Delivered</option>
+                  <option value="cancelled" <%= order.status === 'cancelled' ? 'selected' : '' %>>Cancelled</option>
+                </select>
+                <button type="submit" class="btn btn-gold btn-sm">Update</button>
+              </form>
             </div>
           </div>
         </div>
-      <% }) %>
-    <% } %>
-  </div>
-</body>
-</html>
+      </div>
+    <% }) %>
+  <% }) %>
+<% } %>

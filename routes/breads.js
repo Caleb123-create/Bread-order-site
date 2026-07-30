@@ -3,17 +3,16 @@ const router = express.Router();
 const Bread = require('../models/Bread');
 const Order = require('../models/Order');
 
+const SERVICE_FEE = 200;
+
 // Middleware: require login
 function ensureAuth(req, res, next) {
   if (req.isAuthenticated()) return next();
   res.redirect('/login');
 }
 
-// GET home page - list all breads + carousel (requires login)
+// GET home page - list all breads + carousel
 router.get('/', async (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect('/login');
-  }
   const breads = await Bread.find();
   res.render('home', { breads, user: req.user });
 });
@@ -29,7 +28,6 @@ router.post('/cart/add', async (req, res) => {
 
   if (!req.session.cart) req.session.cart = [];
 
-  // Treat different sizes of the same bread as separate cart lines
   const existingItem = req.session.cart.find(
     (item) => item.breadId === breadId && item.size === size
   );
@@ -70,21 +68,23 @@ router.post('/cart/remove', (req, res) => {
 // GET checkout page (requires login)
 router.get('/checkout', ensureAuth, (req, res) => {
   const cart = req.session.cart || [];
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = subtotal + SERVICE_FEE;
   if (cart.length === 0) return res.redirect('/cart');
-  res.render('checkout', { cart, total, user: req.user, error: null });
+  res.render('checkout', { cart, subtotal, serviceFee: SERVICE_FEE, total, user: req.user, error: null });
 });
 
-// POST place order (requires login)
+// POST place order (requires login) -> goes to payment instructions page
 router.post('/checkout', ensureAuth, async (req, res) => {
   try {
     const cart = req.session.cart || [];
     if (cart.length === 0) return res.redirect('/cart');
 
     const { address, phone } = req.body;
-    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const total = subtotal + SERVICE_FEE;
 
-    await Order.create({
+    const order = await Order.create({
       user: req.user._id,
       items: cart.map((item) => ({
         bread: item.breadId,
@@ -99,7 +99,7 @@ router.post('/checkout', ensureAuth, async (req, res) => {
     });
 
     req.session.cart = [];
-    res.render('order-confirmation', { user: req.user });
+    res.render('payment', { order, user: req.user });
   } catch (err) {
     console.error(err);
     res.redirect('/checkout');
