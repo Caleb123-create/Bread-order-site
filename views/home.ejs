@@ -58,7 +58,11 @@
           <form action="/cart/add" method="POST">
             <input type="hidden" name="breadId" value="<%= bread._id %>">
             <input type="hidden" name="size" value="<%= s.size %>">
-            <input type="number" name="quantity" value="1" min="1" class="form-control form-control-sm mb-2 size-qty-input">
+            <select name="quantity" class="form-select mb-2 size-qty-input">
+  <% for (let i = 1; i <= 10; i++) { %>
+    <option value="<%= i %>"><%= i %></option>
+  <% } %>
+</select>
             <button type="submit" class="btn btn-gold w-100">Add to Cart</button>
           </form>
         </div>
