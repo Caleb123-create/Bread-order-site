@@ -9,8 +9,11 @@ function ensureAuth(req, res, next) {
   res.redirect('/login');
 }
 
-// GET home page - list all breads + carousel
+// GET home page - list all breads + carousel (requires login)
 router.get('/', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect('/login');
+  }
   const breads = await Bread.find();
   res.render('home', { breads, user: req.user });
 });
