@@ -85,3 +85,21 @@ footer {
   background-color: #c19f2f;
   color: #1a1a1a;
 }
+.auth-body {
+  background-image: url('/images/bakery-background.jfif');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.auth-overlay {
+  min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.55);
+}
+
+.auth-card {
+  background-color: #ffffff;
+  padding: 2.5rem;
+  border-radius: 12px;
+}
