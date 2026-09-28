@@ -15,7 +15,9 @@
       <% if (error) { %>
         <div class="alert alert-danger"><%= error %></div>
       <% } %>
-
+      <% if (locals.success) { %>
+  <div class="alert alert-success"><%= success %></div>
+<% } %>
       <form action="/login" method="POST">
         <div class="mb-3">
           <label class="form-label">Email</label>
@@ -25,6 +27,9 @@
           <label class="form-label">Password</label>
           <input type="password" name="password" class="form-control" required>
         </div>
+        <div class="text-end mb-3">
+       <a href="/forgot-password">Forgot password?</a>
+       </div>
         <button type="submit" class="btn btn-gold w-100">Login</button>
       </form>
 
