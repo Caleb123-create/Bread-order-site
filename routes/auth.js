@@ -57,7 +57,7 @@ router.get('/logout', (req, res, next) => {
 
 // Forgot password page
 router.get('/forgot-password', (req, res) => {
-  res.render('forgot-password', { message: null, error: null });
+  res.render('forget-password', { message: null, error: null });
 });
 
 // Send reset link
