@@ -43,7 +43,7 @@ router.get('/logout', (req, res) => {
 router.get('/orders', ensureAdmin, async (req, res) => {
   const orders = await Order.find().populate('user', 'name email').sort({ createdAt: -1 });
 
-  // Group orders by date (e.g. "July 30, 2026")
+  // Group orders by date, and track confirmed total per day
   const grouped = {};
   orders.forEach((order) => {
     const dateKey = order.createdAt.toLocaleDateString('en-US', {
@@ -52,8 +52,16 @@ router.get('/orders', ensureAdmin, async (req, res) => {
       month: 'long',
       day: 'numeric'
     });
-    if (!grouped[dateKey]) grouped[dateKey] = [];
-    grouped[dateKey].push(order);
+
+    if (!grouped[dateKey]) {
+      grouped[dateKey] = { orders: [], confirmedTotal: 0 };
+    }
+
+    grouped[dateKey].orders.push(order);
+
+    if (order.status === 'confirmed' || order.status === 'delivered') {
+      grouped[dateKey].confirmedTotal += order.totalAmount;
+    }
   });
 
   res.render('admin/orders', { grouped });

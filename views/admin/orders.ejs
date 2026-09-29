@@ -25,7 +25,9 @@
     <h4 class="mt-4 mb-3" style="color:#d4af37; border-bottom: 1px solid #d4af37; padding-bottom: 8px;">
       <%= dateKey %> (<%= grouped[dateKey].length %> order<%= grouped[dateKey].length !== 1 ? 's' : '' %>)
     </h4>
-
+ <p class="mb-3" style="color:#f5f5f5;">
+      Confirmed Revenue: <strong style="color:#d4af37;">₦<%= grouped[dateKey].confirmedTotal.toLocaleString() %></strong>
+    </p>
     <% grouped[dateKey].forEach(order => { %>
       <div class="card mb-3" style="background-color:#2a2a2a; border:1px solid #d4af37;">
         <div class="card-body">
